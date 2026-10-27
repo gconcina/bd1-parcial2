@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<section>
+  <h2>Socios</h2>
+  <div class="scroll-box">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Nombre</th><th>DNI</th><th>Email</th><th>Estado</th><th>Inscribir a…</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      {% for socio in socios %}
+      <tr class="{{ 'inactivo' if not socio.activo }}">
+        <td>{{ socio.id_socio }}</td>
+        <td>{{ socio.apellido }}, {{ socio.nombre }}</td>
+        <td>{{ socio.dni }}</td>
+        <td>{{ socio.email or '—' }}</td>
+        <td><span class="badge {{ 'activa' if socio.activo else 'baja' }}">{{ 'Activo' if socio.activo else 'Inactivo' }}</span></td>
+        <td class="celda-inscripcion">
+          <form class="inline" method="post" action="{{ url_for('inscribir', id_socio=socio.id_socio) }}">
+            <select name="id_actividad" required>
+              <option value="" disabled selected>Elegir actividad</option>
+              {% for actividad in actividades %}
+              <option value="{{ actividad.id_actividad }}">{{ actividad.nombre }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="rojo">Inscribir</button>
+          </form>
+        </td>
+        <td>
+          <div class="acciones">
+            <form class="inline" method="post" action="{{ url_for('alternar_socio', id_socio=socio.id_socio) }}">
+              <button type="submit">{{ 'Desactivar' if socio.activo else 'Activar' }}</button>
+            </form>
+            <form class="inline" method="post" action="{{ url_for('eliminar_socio', id_socio=socio.id_socio) }}">
+              <button type="submit" class="rojo">Eliminar</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+  <h2 style="margin-top:1.5rem">Alta de socio</h2>
+  <form method="post" action="{{ url_for('alta_socio') }}" class="form-grid">
+    <label>Nombre <input name="nombre" required></label>
+    <label>Apellido <input name="apellido" required></label>
+    <label>DNI <input name="dni" required maxlength="10"></label>
+    <label>Email <input name="email" type="email"></label>
+    <button type="submit" class="rojo">Dar de alta</button>
+  </form>
+</section>
+
+<section>
+  <h2>Inscripciones</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Socio</th><th>Actividad</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      {% for inscripcion in inscripciones %}
+      <tr>
+        <td>{{ inscripcion.id_inscripcion }}</td>
+        <td>{{ inscripcion.socio.apellido }}, {{ inscripcion.socio.nombre }}</td>
+        <td>{{ inscripcion.actividad.nombre }}</td>
+        <td>{{ inscripcion.fecha_inscripcion }}</td>
+        <td><span class="badge {{ inscripcion.estado }}">{{ inscripcion.estado }}</span></td>
+        <td>
+          <div class="acciones">
+            {% if inscripcion.estado == 'activa' %}
+            <form class="inline" method="post" action="{{ url_for('baja_inscripcion', id_inscripcion=inscripcion.id_inscripcion) }}">
+              <button type="submit">Dar de baja</button>
+            </form>
+            {% endif %}
+            <form class="inline" method="post" action="{{ url_for('eliminar_inscripcion', id_inscripcion=inscripcion.id_inscripcion) }}">
+              <button type="submit" class="rojo">Eliminar</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Actividades</h2>
+  <table>
+    <thead><tr><th>#</th><th>Nombre</th><th>Cupo máximo</th><th>Monto</th></tr></thead>
+    <tbody>
+      {% for actividad in actividades %}
+      <tr>
+        <td>{{ actividad.id_actividad }}</td>
+        <td>{{ actividad.nombre }}</td>
+        <td>{{ actividad.cupo_maximo }}</td>
+        <td>${{ actividad.monto }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% endblock %}

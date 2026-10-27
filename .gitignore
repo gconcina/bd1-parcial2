@@ -1,0 +1,12 @@
+# Dependencias y caché de Python
+.venv/
+__pycache__/
+*.pyc
+
+# Volcado con contraseñas: nunca al repo (el esquema portable es gimnasio.sql)
+gimnasio_backup.sql
+
+# Logs y datos locales
+*.log
+*.sock
+mariadb-data/

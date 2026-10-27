@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gimnasio — Gestión de socios</title>
+  <style>
+    :root { --rojo: #c0392b; --gris: #f4f4f4; --borde: #ddd; }
+    body { font-family: system-ui, sans-serif; margin: 0; background: var(--gris); color: #222; }
+    header { background: var(--rojo); color: #fff; padding: 1rem 2rem; }
+    header h1 { margin: 0; font-size: 1.4rem; }
+    main { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    section { background: #fff; border: 1px solid var(--borde); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+    .scroll-box { max-height: 420px; overflow-y: auto; border: 1px solid var(--borde); border-radius: 6px; }
+    .scroll-box table { border-collapse: separate; border-spacing: 0; }
+    .scroll-box th { position: sticky; top: 0; z-index: 1; }
+    h2 { margin-top: 0; font-size: 1.1rem; color: var(--rojo); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--borde); text-align: left; }
+    th { background: var(--gris); }
+    .badge { padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.78rem; }
+    .activa { background: #d4efdf; color: #1e8449; }
+    .baja   { background: #fdebd0; color: #b9770e; }
+    .inactivo { opacity: 0.55; }
+    form.inline { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .acciones { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .celda-inscripcion { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+    .celda-inscripcion select { min-width: 170px; }
+    button { cursor: pointer; border: 1px solid var(--borde); border-radius: 6px; padding: 0.3rem 0.7rem; background: #fff; white-space: nowrap; }
+    button.rojo { background: var(--rojo); border-color: var(--rojo); color: #fff; }
+    .flash { padding: 0.6rem 1rem; border-radius: 6px; margin-bottom: 1rem; }
+    .flash.ok { background: #d4efdf; color: #1e8449; }
+    .flash.error { background: #fadbd8; color: #943126; }
+    .form-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: end; }
+    .form-grid label { display: flex; flex-direction: column; font-size: 0.85rem; gap: 0.25rem; }
+    .form-grid input, .form-grid select { padding: 0.35rem 0.5rem; border: 1px solid var(--borde); border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <header><h1>🏋️ Gimnasio — Sistema de gestión</h1></header>
+  <main>
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+      {% for categoria, texto in mensajes %}<div class="flash {{ categoria }}">{{ texto }}</div>{% endfor %}
+    {% endwith %}
+    {% block contenido %}{% endblock %}
+  </main>
+</body>
+</html>
