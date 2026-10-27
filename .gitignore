@@ -10,3 +10,7 @@ gimnasio_backup.sql
 *.log
 *.sock
 mariadb-data/
+
+# Documentación editable localmente (informe, diagramas, estado)
+docs/
+generar_informe.py
